@@ -25,7 +25,7 @@ var orbitData;
 var orbits = {};
 //orbits in array form
 var orbitArr = [];
-d3.json("fisOrbits.json", function (data) {
+d3.json("friends-in-space-data/fisOrbits.json", function (data) {
 	orbitData = data;
 	//organizes data by day
 	orbitData.forEach(function(d){
