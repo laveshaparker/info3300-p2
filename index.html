@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<style>
+#main {
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+}
+.range {
+	width: 500px;
+}
+</style>
+</head>
+<body>
+<script>
+//current orbit
+var current;
+//the unabridged date from fisOrbits
+var orbitData;
+//the orbits group by day
+var orbits = {};
+//orbits in array form
+var orbitArr = [];
+d3.json("fisOrbits.json", function (data) {
+	orbitData = data;
+	//organizes data by day
+	orbitData.forEach(function(d){
+		var i = 0;
+		d.orbit.timestamps.forEach(function(e){
+			var date = new Date(e);
+			var dstring = date.getFullYear() + ', ' + date.getMonth() + ', ' + date.getDate();
+			if(orbits[dstring]){
+				orbits[dstring].push({'date':date, 'coords':d.orbit.coordinates[i]});
+			}
+			else{
+				orbits[dstring] = [];
+				orbits[dstring].push({'date':date, 'coords':d.orbit.coordinates[i]});
+			}
+			i++;
+		});
+	});
+	//outputs orbits as orbitArr
+	$.each(orbits, function(d, e){
+			orbitArr.push(e);
+	});
+});
+//initialize interface
+window.onload = function(){
+	$("#days").attr("max", orbitArr.length - 1);
+	$("#times").attr("max", orbitArr[0].length - 1);
+	$("#selectedDate").text(orbitArr[0][0].date.toDateString());
+	$("#selectedTime").text(orbitArr[0][0].date.toTimeString());
+	current = orbitArr[0][0];
+}
+//change in date
+function setDate(ind){
+	$("#selectedDate").text(orbitArr[ind][0].date.toDateString());
+	$("#times").attr("max", orbitArr[ind].length - 1);
+	current = orbitArr[ind][Number($('#times').val())];
+	$("#selectedTime").text(current.date.toTimeString());
+}
+//change in time
+function setTime(ind){
+	current = orbitArr[Number($('#days').val())][ind];
+	$("#selectedTime").text(current.date.toTimeString());
+}
+</script>
+<div id="main">
+<p id="selectedDate"></p>
+<input type="range" id="days" class="range" min="0" value="0" oninput="setDate(this.value)"/><br />
+<p id="selectedTime"></p>
+<input type="range" id="times" class="range" min="0" value="0" oninput="setTime(this.value)"/>
+</div>
+</body>
+</html>
