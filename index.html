@@ -77,8 +77,11 @@
             <p id="selectedDate"></p>
             <input type="range" id="days" class="range" min="0" value="0" oninput="setDate(this.value)"/><br />
             <p id="selectedTime"></p>
-            <input type="range" id="times" class="range" min="0" value="0" oninput="setTime(this.value)"/>
+            <input type="range" id="times" class="range" min="0" value="0" oninput="setTime(this.value)"/><br />
+			<button type="button" id="play" onclick="forward=setInterval('moveForward()', 200);">Play</button>
+			<button type="button" style="display: none" id="pause" onclick="pause(forward)">Pause</button>
             <script>
+			var forward;
             //current orbit
             var current;
             //the unabridged date from fisOrbits
@@ -182,6 +185,35 @@
 			});
 
 			d3.select(self.frameElement).style("height", height + "px");
+			
+			function moveForward(){
+				$('#play').hide();
+				$('#pause').show();
+				if($('#times').val() != $('#times').attr('max')){
+					document.getElementById("times").stepUp();
+					var ind = $('#times').val()
+					current = orbitArr[Number($('#days').val())][ind];
+					$("#selectedTime").text(current.date.toTimeString());
+				}
+				else if($('#days').val() != $('#days').attr('max')){
+					document.getElementById("days").stepUp();
+					var ind = $('#days').val();
+					$("#selectedDate").text(orbitArr[ind][0].date.toDateString());
+					$("#times").attr("max", orbitArr[ind].length - 1);
+					current = orbitArr[ind][0];
+					$("#selectedTime").text(current.date.toTimeString());
+					$("#times").val(0);
+				}
+				else {
+					clearInterval(this);
+				}
+			}
+			
+			function pause(forward) {
+				$('#pause').hide();
+				$('#play').show();
+				clearInterval(forward);
+			}
 
 			</script>
         </div>
