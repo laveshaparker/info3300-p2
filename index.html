@@ -108,15 +108,14 @@
             <p id="selectedTime"></p>
             <input type="range" id="times" class="range" min="0" value="0" oninput="setTime(this.value)"/><br />
 			Set Play Speed <br />
-			<input type="range" id="speed" class="range" min="0" max="200" value="100" oninput="setSpeed(this.value)"/><br />
-			<pre>Slow						Fast</pre><br />
-			<button type="button" id="play" onclick="forward=setInterval('moveForward()', speedScale($('#speed').val()));">Play</button>
+			Slow&nbsp;<input type="range" id="speed" class="range" min="0" max="200" value="100"/>&nbsp;Fast<br />
+			<button type="button" id="play" onclick="forward=setTimeout('moveForward()', speedScale($('#speed').val()));">Play</button>
 			<button type="button" style="display: none" id="pause" onclick="pause(forward)">Pause</button>
 		
             <script>
 			var speedScale = d3.scale.linear()
 				.domain([0,200])
-				.range([400, 10]);
+				.range([400, 5]);
 			var forward;
             //current orbit
             var current;
@@ -230,6 +229,7 @@
 					var ind = $('#times').val()
 					current = orbitArr[Number($('#days').val())][ind];
 					$("#selectedTime").text(current.date.toTimeString());
+					forward=setTimeout('moveForward()', speedScale($('#speed').val()));
 				}
 				else if($('#days').val() != $('#days').attr('max')){
 					document.getElementById("days").stepUp();
@@ -239,23 +239,16 @@
 					current = orbitArr[ind][0];
 					$("#selectedTime").text(current.date.toTimeString());
 					$("#times").val(0);
-				}
-				else {
-					clearInterval(forward);
+					forward=setTimeout('moveForward()', speedScale($('#speed').val()));
 				}
 			}
 			
 			function pause(forward) {
 				$('#pause').hide();
 				$('#play').show();
-				clearInterval(forward);
+				clearTimeout(forward);
 			}
-			function setSpeed(speed) {
-				if($('#play').css('display') == "none") {
-					clearInterval(forward);
-					forward=setInterval('moveForward()', speedScale(speed));
-				}
-			}
+
 
 			</script>
         </div>
