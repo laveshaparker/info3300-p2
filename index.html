@@ -2,6 +2,7 @@
 <html>
     <head>
         <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 		<script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
@@ -84,7 +85,10 @@
             <blockquote class="twitter-tweet" lang="en"><p>Hello <a href="https://twitter.com/hashtag/India?src=hash">#India</a>! In the Tamil Nadu state, 3 temples from the Chola Empire (11th &amp; 12th century) are <a href="https://twitter.com/hashtag/WorldHeritage?src=hash">#WorldHeritage</a> site. <a href="http://t.co/kWRob1xxQK">pic.twitter.com/kWRob1xxQK</a></p>&mdash; Sam Cristoforetti (@AstroSamantha) <a href="https://twitter.com/AstroSamantha/status/588316473849946113">April 15, 2015</a></blockquote>
             <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
             <a class="twitter-timeline" href="https://twitter.com/AstroSamantha" data-widget-id="588409020664406017">Tweets by @AstroSamantha</a>
-            <script>
+            <blockquote class="twitter-tweet"><p>Questo weekend c&#39;è la finale italiana delle <a href="https://twitter.com/hashtag/OlimpiadiAstronomia?src=hash">#OlimpiadiAstronomia</a>: un grande in bocca al lupo dallo spazio! <a href="https://twitter.com/mediainaf">@mediainaf</a> <a href="http://t.co/SAKu1qGmxr">http://t.co/SAKu1qGmxr</a></p>&mdash; Sam Cristoforetti (@AstroSamantha) <a href="https://twitter.com/AstroSamantha/status/588978295955423233">April 17, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+            <script> 
+                // get the timeline for samantha
                 !function(d,s,id){
                     var js,fjs=d.getElementsByTagName(s)[0],
                         p=/^http:/.test(d.location)?'http':'https';
@@ -98,7 +102,28 @@
                 (document,"script","twitter-wjs");
             </script>
         </div>
-        
+
+        <div>
+            <script>
+                var user_timeline_url = "https://api.twitter.com/1.1/statuses/user_timeline.json",
+                    samantha_name = "AstroSamantha";
+                $.ajax ({
+                    url: user_timeline_url,
+                    context: document.body,
+                    method: "GET",
+                    data: {
+                        screen_name: samantha_name,
+                        count: 1,
+                        exclude_replies: true,
+                        include_rts: false,
+                    },
+                    success: function(data) {
+                        console.log(data);
+                    }
+                })
+            </script>
+        </div>
+
         <div id="main" class="floated three-fourths">
 			<!-- Shows the selected day as a string -->
             <p id="selectedDate"></p>
