@@ -157,6 +157,27 @@
 						}
 					});
 			});
+			
+			
+			svg.selectAll('circle')
+				.data(orbitArr[$('#days').val()])
+				.enter()
+				.append("circle")
+				.attr("r", 3)
+				.attr("transform", function(d) { 
+					return "translate(" + projection(d.coords) + ")";
+				})
+				.attr("data-coords", function(d){
+					return d.coords;
+				})
+				.style("fill", function(d){
+					if(d.coords == current.coords){
+						return 'blue';
+				}
+				else {
+					return 'red'; 
+				}
+			});
 			*/
 			//takes value of speed slider and scales it to a millisecond delay
 			var speedScale = d3.scale.linear()
