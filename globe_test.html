@@ -50,7 +50,7 @@
 			}
 
 			.land {
-				fill: #222;
+				fill: green;
 			}
 
 			.boundary {
@@ -204,7 +204,7 @@
 			var width = 960,
     height = 500;
 
-var projection = d3.geo.kavrayskiy7()
+var projection = d3.geo.orthographic()
     .scale(250)
     .translate([width / 2, height / 2])
     .clipAngle(90);
@@ -224,33 +224,29 @@ var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height);
 
-var longScale = d3.scale.linear()
-	.domain([-179, 180])
-	.range([0, 960]);
-	
-var latScale = d3.scale.linear()
-	.domain([-90, 90])
-	.range([0, 500]);
-
 function moveMap(cDay, cTime) {
   var p = current.coords;
   projection.rotate([-p[0], -p[1]]);
   svg.selectAll("path").attr("d", path);
-  svg.selectAll("circle").remove();
-for(var j = 0; j <= cTime; j++) {
+	if(cDay == 0 && cTime == 0) {
 	svg.append("circle")
 		.attr("r", 5)
-		.attr("transform", "translate(" + projection(orbitArr[cDay][j].coords) + ")")
+		.attr("transform", "translate(" + projection(current.coords) + ")")
 		.style("fill", "red");
   }		
 }
 
-d3.json("world-50m.json", function(error, world) {
+d3.json("world-110m.json", function(error, world) {
   svg.append("path")
       .datum(topojson.feature(world, world.objects.land))
       .attr("class", "land")
       .attr("d", path);
 });
+svg.append('circle')
+	.attr('cx', 480)
+	.attr('cy', 250)
+	.attr('r', 250)
+	.style('fill', 'blue');
 
 			d3.select(self.frameElement).style("height", height + "px");
 			//implementation of play feature

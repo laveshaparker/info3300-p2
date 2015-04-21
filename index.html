@@ -162,6 +162,7 @@
 					//variable to allow the coordinates for each day to be matched to the correct timestamp
                     var i = 0;
 					//individually assesses and organizes each timestamp for the selected entry.  uses i to track corresponding coordinates
+					var orbitID = d.orbitID;
                     d.orbit.timestamps.forEach(function(e){
                         var date = new Date(e);
 						//string to check for existing day entry
@@ -169,13 +170,13 @@
 						//checks if entry exists for current data's timestamp
                         if(orbits[dstring]){
 							//pushes a new "orbit" to the current day
-                            orbits[dstring].push({'date':date, 'coords':d.orbit.coordinates[i]});
+                            orbits[dstring].push({'date':date, 'coords':d.orbit.coordinates[i], 'id':orbitID});
                         }
                         else{
 							//creates an entry for the current day
                             orbits[dstring] = [];
 							//pushes a new "orbit" to the current day
-                            orbits[dstring].push({'date':date, 'coords':d.orbit.coordinates[i]});
+                            orbits[dstring].push({'date':date, 'coords':d.orbit.coordinates[i], 'id':orbitID});
                         }
                         i++;
                     });
