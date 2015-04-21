@@ -235,6 +235,7 @@
                 $("#selectedTime").text(current.date.toTimeString());
 				//Sets times slider to its min value
                 $("#times").val(0);
+				plotCircle();
             }
             //change in time
             function setTime(ind){
@@ -242,6 +243,7 @@
                 current = orbitArr[Number($('#days').val())][ind];
 				//updates time text
                 $("#selectedTime").text(current.date.toTimeString());
+				plotCircle();
             }
             </script>
 			<script>
@@ -279,7 +281,22 @@
 				.datum(graticule)
 				.attr("class", "graticule")
 				.attr("d", path);
-
+				
+			//plot current ISS position
+			var plotCircle = function(){
+				  $(".curCircle").remove();
+				  svg.append("circle") //test circle for selecting point
+				   .attr("cx", projection(current.coords)[0]) //x-longitude
+				   .attr("cy", projection(current.coords)[1]) //y-latitude
+				   .attr("r", 2) 
+				   .attr("class", "curCircle")
+				   .attr("style", "stroke: blue; stroke-width: 8; fill: #000000");
+				};
+			//plot current ISS orbit trace for current day
+			var plotTrace = function(){
+				//var curOrbitId = 
+			};
+			
 			d3.json("world-50m.json", function(error, world) {
 			  svg.insert("path", ".graticule")
 				  .datum(topojson.feature(world, world.objects.land))
@@ -321,6 +338,7 @@
 					//sets next instance of moveForward to happen after the time indicated by the speed slider
 					forward=setTimeout('moveForward()', speedScale($('#speed').val()));
 				}
+				plotCircle();
 			}
 			//pauses/stops the play function
 			function pause(forward) {
