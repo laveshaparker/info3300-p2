@@ -143,22 +143,7 @@
             <script>
 			/**
 			Each statement for adding circles for a given day
-			$.each(orbitArr[$('#days').val()], function(d, e) { 
-				svg.append("circle")
-					.attr("r", 3)
-					.attr("transform", "translate(" + projection(e.coords) + ")")
-					.attr("data-coords", e.coords)
-					.style("fill", function(){
-						if(e.coords == current.coords){
-							return 'blue';
-						}
-						else {
-							return 'red'; 
-						}
-					});
-			});
-			
-			
+		
 			svg.selectAll('circle')
 				.data(orbitArr[$('#days').val()])
 				.enter()
