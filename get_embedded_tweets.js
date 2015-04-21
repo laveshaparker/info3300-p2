@@ -10,11 +10,9 @@ var success = function (data) {
     tweet = data ? JSON.parse(data) : [];
 
     return_obj = {
-        html : tweet.html,
-        tweet_id  : /[^/]*$/.exec(tweet.url)[0]
+        tweet_id  : /[^/]*$/.exec(tweet.url)[0],
+        html : tweet.html
     };
-
-    console.log(return_obj);
 
     fs.appendFile("embedded_tweets.json", JSON.stringify(return_obj) + ',', function(err) {
         if(err) {
@@ -34,7 +32,7 @@ var callOembed = function () {
         // We are about to hit our rate limit. We should pause for 15 minutes.
         setTimeout(
             callOembed,
-            2000
+            900000
         );
     } else {
         callOembed();
