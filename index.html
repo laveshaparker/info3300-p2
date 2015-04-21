@@ -145,9 +145,18 @@
 			Each statement for adding circles for a given day
 			$.each(orbitArr[$('#days').val()], function(d, e) { 
 				svg.append("circle")
-					.attr("r", 2)
+					.attr("r", 3)
 					.attr("transform", "translate(" + projection(e.coords) + ")")
-					.style("fill", "red");})
+					.attr("data-coords", e.coords)
+					.style("fill", function(){
+						if(e.coords == current.coords){
+							return 'blue';
+						}
+						else {
+							return 'red'; 
+						}
+					});
+			});
 			*/
 			//takes value of speed slider and scales it to a millisecond delay
 			var speedScale = d3.scale.linear()
@@ -203,10 +212,10 @@
 				//Max value of times initialized to number of times in first day -1
                 $("#times").attr("max", orbitArr[0].length - 1);
 				//Sets text to first day and time respectively
-                $("#selectedDate").text(orbitArr[$('#days').val()][0].date.toDateString());
-                $("#selectedTime").text(orbitArr[$('#days').val()][0].date.toTimeString());
+                $("#selectedDate").text(orbitArr[$('#days').val()][$('#times').val()].date.toDateString());
+                $("#selectedTime").text(orbitArr[$('#days').val()][$('#times').val()].date.toTimeString());
 				//initializes current
-                current = orbitArr[$('#days').val()][0];
+                current = orbitArr[$('#days').val()][$('#times').val()];
             }
             //change in date
             function setDate(ind){
