@@ -222,6 +222,7 @@
                 $("#selectedTime").text(orbitArr[$('#days').val()][$('#times').val()].date.toTimeString());
 				//initializes current
                 current = orbitArr[$('#days').val()][$('#times').val()];
+				plotDayTrace();
             }
             //change in date
             function setDate(ind){
@@ -236,7 +237,6 @@
 				//Sets times slider to its min value
                 $("#times").val(0);
 				plotDayTrace();
-				plotCircle();
             }
             //change in time
             function setTime(ind){
@@ -244,7 +244,7 @@
                 current = orbitArr[Number($('#days').val())][ind];
 				//updates time text
                 $("#selectedTime").text(current.date.toTimeString());
-				plotCircle();
+				moveCircle();
             }
             </script>
 			<script>
@@ -285,14 +285,30 @@
 				
 			//plot current ISS position
 			var plotCircle = function(){
-				  $(".curCircle").remove();
-				  svg.append("circle") //test circle for selecting point
+				$(".curCircle").remove();
+				$("#iss").remove();
+				svg.append("circle") //test circle for selecting point
 				   .attr("cx", projection(current.coords)[0]) //x-longitude
 				   .attr("cy", projection(current.coords)[1]) //y-latitude
 				   .attr("r", 2) 
 				   .attr("class", "curCircle")
 				   .attr("style", "stroke: blue; stroke-width: 8; fill: #000000");
+				svg.append("svg:image")
+					.attr("x", projection(current.coords)[0])
+					.attr("y", projection(current.coords)[1])
+					.attr('width', 65)
+					.attr('height', 35)
+					.attr("id", "iss")
+					.attr('xlink:href', "images/iss.gif");
 				};
+			function moveCircle() {
+				svg.select('.curCircle')
+					.attr("cx", projection(current.coords)[0])
+					.attr("cy", projection(current.coords)[1]);
+				svg.select('#iss')
+					.attr("x", projection(current.coords)[0])
+					.attr("y", projection(current.coords)[1]);
+			}
 			//plot current ISS orbit trace for current day
 			var plotDayTrace = function(){
 				$(".dayCircle").remove();
@@ -308,14 +324,8 @@
 					.attr("data-coords", function(d){
 						return d.coords;
 					})
-					.style("fill", function(d){
-						if(d.coords == current.coords){
-							return 'blue';
-					}
-					else {
-						return 'red'; 
-					}
-				});
+					.style("fill", 'red');
+				plotCircle();
 			};
 			
 			d3.json("world-50m.json", function(error, world) {
@@ -346,12 +356,6 @@
 					$("#selectedTime").text(current.date.toTimeString());
 					//sets next instance of moveForward to happen after the time indicated by the speed slider
 					forward=setTimeout('moveForward()', speedScale($('#speed').val()));
-					console.log("after: " + temp);
-					if(Number($('#days').val()) == 0 && temp == 1){
-						plotDayTrace();
-						temp = 0;
-					}
-					console.log("after: " + temp);
 				}
 				//case if end of day but not last day
 				else if($('#days').val() != $('#days').attr('max')){
@@ -368,7 +372,7 @@
 					plotDayTrace();
 				}
 				
-				plotCircle();
+				moveCircle();
 			}
 			//pauses/stops the play function
 			function pause(forward) {
