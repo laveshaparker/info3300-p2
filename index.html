@@ -123,7 +123,13 @@
                 })
             </script>
         </div>
-
+		<script>
+			var width = 1440,
+				height = 600;
+			var svg = d3.select("body").append("svg")
+				.attr("width", width)
+				.attr("height", height);
+		</script>
         <div id="main" class="floated three-fourths">
 			<!-- Shows the selected day as a string -->
             <p id="selectedDate"></p>
@@ -140,30 +146,9 @@
 			<button type="button" id="play" onclick="forward=setTimeout('moveForward()', speedScale($('#speed').val()));">Play</button>
 			<!-- Button to stop sliders automatically advancing, hidden by default -->
 			<button type="button" style="display: none" id="pause" onclick="pause(forward)">Pause</button>
+			<button type="button" id="showOrbits" onclick="showOrbit()" style="display:none">Show Only the Current Orbit</button>
+			<button type="button" id="showDay" onclick="showDay()" style="">Show All Orbits for the Selected Day</button>
             <script>
-			/**
-			Each statement for adding circles for a given day
-		
-			svg.selectAll('circle')
-				.data(orbitArr[$('#days').val()])
-				.enter()
-				.append("circle")
-				.attr("r", 3)
-				.attr("transform", function(d) { 
-					return "translate(" + projection(d.coords) + ")";
-				})
-				.attr("data-coords", function(d){
-					return d.coords;
-				})
-				.style("fill", function(d){
-					if(d.coords == current.coords){
-						return 'blue';
-				}
-				else {
-					return 'red'; 
-				}
-			});
-			*/
 			//takes value of speed slider and scales it to a millisecond delay
 			var speedScale = d3.scale.linear()
 				.domain([0,200])
@@ -222,8 +207,12 @@
                 $("#selectedTime").text(orbitArr[$('#days').val()][$('#times').val()].date.toTimeString());
 				//initializes current
                 current = orbitArr[$('#days').val()][$('#times').val()];
-				//plotDayTrace();
-				plotCurOrbit();
+				if(show1Orbit){
+					plotCurOrbit();
+				}
+				else{
+					plotDayTrace();
+				}
             }
             //change in date
             function setDate(ind){
@@ -237,20 +226,30 @@
                 $("#selectedTime").text(current.date.toTimeString());
 				//Sets times slider to its min value
                 $("#times").val(0);
-				plotDayTrace();
+				if(show1Orbit){
+					plotCurOrbit();
+				}
+				else{
+					plotDayTrace();
+				}
             }
             //change in time
             function setTime(ind){
+				var temp = current;
 				//updates current to the corresponding entry
                 current = orbitArr[Number($('#days').val())][ind];
 				//updates time text
                 $("#selectedTime").text(current.date.toTimeString());
-				moveCircle();
+				if(show1Orbit && (temp.id != current.id)) {	
+					plotCurOrbit();
+				}
+				else{
+					moveCircle();
+				}
             }
             </script>
 			<script>
-			var width = 1440,
-				height = 855;
+			var show1Orbit = true;
 			//currently using kavrayskiy projection for 2D
 			var projection = d3.geo.kavrayskiy7()
 				.scale(170)
@@ -261,10 +260,6 @@
 				.projection(projection);
 
 			var graticule = d3.geo.graticule();
-
-			var svg = d3.select("body").append("svg")
-				.attr("width", width)
-				.attr("height", height);
 
 			svg.append("defs").append("path")
 				.datum({type: "Sphere"})
@@ -364,6 +359,7 @@
 			//implementation of play feature
 			var temp = 1;
 			function moveForward(){
+				var temp = current;
 				//toggles buttons
 				$('#play').hide();
 				$('#pause').show();
@@ -374,6 +370,12 @@
 					var ind = $('#times').val()
 					current = orbitArr[Number($('#days').val())][ind];
 					$("#selectedTime").text(current.date.toTimeString());
+					if(show1Orbit && (temp.id != current.id)) {	
+						plotCurOrbit();
+					}
+					else{
+						moveCircle();
+					}
 					//sets next instance of moveForward to happen after the time indicated by the speed slider
 					forward=setTimeout('moveForward()', speedScale($('#speed').val()));
 				}
@@ -387,12 +389,15 @@
 					current = orbitArr[ind][0];
 					$("#selectedTime").text(current.date.toTimeString());
 					$("#times").val(0);
+					if(show1Orbit){
+						plotCurOrbit();
+					}
+					else{
+						plotDayTrace();
+					}
 					//sets next instance of moveForward to happen after the time indicated by the speed slider
 					forward=setTimeout('moveForward()', speedScale($('#speed').val()));
-					plotDayTrace();
 				}
-				
-				moveCircle();
 			}
 			//pauses/stops the play function
 			function pause(forward) {
@@ -402,8 +407,21 @@
 				//prevents moveForward from being called until the play button is pressed again
 				clearTimeout(forward);
 			}
-
-
+			function showDay() {
+				show1Orbit = false;
+				$('#showDay').hide();
+				$('#showOrbits').show();
+				$(".curOrbitCircle").remove();
+				plotDayTrace();
+			}
+			function showOrbit() {
+				show1Orbit = true;
+				$('#showOrbits').hide();
+				$('#showDay').show();
+				$(".dayCircle").remove();
+				plotCurOrbit();
+			}
+			
 			</script>
         </div>
     </body>
