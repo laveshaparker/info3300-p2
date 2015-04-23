@@ -222,7 +222,8 @@
                 $("#selectedTime").text(orbitArr[$('#days').val()][$('#times').val()].date.toTimeString());
 				//initializes current
                 current = orbitArr[$('#days').val()][$('#times').val()];
-				plotDayTrace();
+				//plotDayTrace();
+				plotCurOrbit();
             }
             //change in date
             function setDate(ind){
@@ -323,6 +324,25 @@
 					})
 					.attr("data-coords", function(d){
 						return d.coords;
+					})
+					.style("fill", 'red');
+				plotCircle();
+			};
+			
+			//plot current ISS orbit trace for current orbit
+			var plotCurOrbit = function(){
+				$(".curOrbitCircle").remove();
+				svg.selectAll('circle')
+					.data(orbitData[current.id].orbit.coordinates)
+					.enter()
+					.append("circle")
+					.attr("r", 3)
+					.attr("class", "curOrbitCircle")
+					.attr("transform", function(d) { 
+						return "translate(" + projection(d) + ")";
+					})
+					.attr("data-coords", function(d){
+						return d;
 					})
 					.style("fill", 'red');
 				plotCircle();
