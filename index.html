@@ -235,6 +235,7 @@
                 $("#selectedTime").text(current.date.toTimeString());
 				//Sets times slider to its min value
                 $("#times").val(0);
+				plotDayTrace();
 				plotCircle();
             }
             //change in time
@@ -293,8 +294,28 @@
 				   .attr("style", "stroke: blue; stroke-width: 8; fill: #000000");
 				};
 			//plot current ISS orbit trace for current day
-			var plotTrace = function(){
-				//var curOrbitId = 
+			var plotDayTrace = function(){
+				$(".dayCircle").remove();
+				svg.selectAll('circle')
+					.data(orbitArr[$('#days').val()])
+					.enter()
+					.append("circle")
+					.attr("r", 3)
+					.attr("class", "dayCircle")
+					.attr("transform", function(d) { 
+						return "translate(" + projection(d.coords) + ")";
+					})
+					.attr("data-coords", function(d){
+						return d.coords;
+					})
+					.style("fill", function(d){
+						if(d.coords == current.coords){
+							return 'blue';
+					}
+					else {
+						return 'red'; 
+					}
+				});
 			};
 			
 			d3.json("world-50m.json", function(error, world) {
@@ -311,6 +332,7 @@
 
 			d3.select(self.frameElement).style("height", height + "px");
 			//implementation of play feature
+			var temp = 1;
 			function moveForward(){
 				//toggles buttons
 				$('#play').hide();
@@ -324,6 +346,12 @@
 					$("#selectedTime").text(current.date.toTimeString());
 					//sets next instance of moveForward to happen after the time indicated by the speed slider
 					forward=setTimeout('moveForward()', speedScale($('#speed').val()));
+					console.log("after: " + temp);
+					if(Number($('#days').val()) == 0 && temp == 1){
+						plotDayTrace();
+						temp = 0;
+					}
+					console.log("after: " + temp);
 				}
 				//case if end of day but not last day
 				else if($('#days').val() != $('#days').attr('max')){
@@ -337,7 +365,9 @@
 					$("#times").val(0);
 					//sets next instance of moveForward to happen after the time indicated by the speed slider
 					forward=setTimeout('moveForward()', speedScale($('#speed').val()));
+					plotDayTrace();
 				}
+				
 				plotCircle();
 			}
 			//pauses/stops the play function
