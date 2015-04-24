@@ -12,6 +12,8 @@
             $("#times").attr("max", orbitArr[ind].length - 1);
 			//updates current to the first time of the selected day
             current = orbitArr[ind][0];
+            // day is used as the lower bound for tweet displays.
+            day.date = current.date;
 			//updates time text
             $("#selectedTime").text(current.date.toTimeString());
 			//Sets times slider to its min value

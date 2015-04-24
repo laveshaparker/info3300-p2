@@ -130,18 +130,27 @@
             // An object that manages displaying tweets
             var tweetHandler;
 
-            $("#times").on("input change", function() {
-                tweetHandler.tweets[5].plotTweet(svg);
-                // // console.log('serving');
+            $("#days").on("input change", function() {
+                // console.log("removing tweets");
+                tweetHandler.removeTweets();
                 // tweetHandler.serveTweets(current);
-                // // console.log('plotting');
                 // tweetHandler.plotTweets();
+            });
+
+            $("#times").on("input change", function() {
+                // tweetHandler.tweets[5].plotTweet(svg);
+                // console.log('serving');
+                tweetHandler.serveTweets(current);
+                // // console.log('plotting');
+                tweetHandler.plotTweets();
             });
             </script>
 
             <script>
             //current orbit
             var current;
+            // current day
+            var day;
             //the unabridged date from fisOrbits
             var orbitData;
             //the orbits group by day
@@ -200,6 +209,12 @@
                 $("#selectedTime").text(orbitArr[$('#days').val()][$('#times').val()].date.toTimeString());
                 //initializes current
                 current = orbitArr[$('#days').val()][$('#times').val()];
+                day = {
+                    date : current.date,
+                    onChange : function() {
+                        console.log("day changed.");
+                    },
+                };
                 if(show1Orbit){
                     plotCurOrbit();
                 }
