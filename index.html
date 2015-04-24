@@ -134,15 +134,12 @@
             // Raw data from tweets_timestamps_html.json
             var tweets;
             // An object that manages displaying tweets
-            var tweetHandler = {};
+            var tweetHandler;
 
             $("#times").on("change", function() {
-                if (!tweetHandler.tweets) {
-                    // Can now initialize a TweetHandler, since current is definitely defined
-                    console.log(svg);
-                    tweetHandler = TweetHandler(tweets, current, 0);   
-                }
-                tweetHandler.serveTweets();
+                console.log('serving');
+                tweetHandler.serveTweets(current, 0);
+                console.log('plotting');
                 tweetHandler.plotTweets();
             });
             </script>
@@ -191,7 +188,9 @@
                 setDefault();
 
                 // Read tweet data
-                d3.json("tweets_timestamps_html.json", function (ts) {tweets = ts});
+                d3.json("relevant_tweets.json", function (ts) {
+                    tweetHandler = TweetHandler(ts);
+                });
 
                 
 

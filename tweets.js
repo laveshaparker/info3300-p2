@@ -1,29 +1,36 @@
-function TweetHandler(tweets, current, midnight_day_of) {
+function checkForEntry(tweet, active) {
+    active.forEach(function(active_tweet) {
+        if (active_tweet.id === tweet.id) {
+            return true;
+        }
+    });
+    return false;
+}
+
+function TweetHandler(tweets) {
+    console.log('tweets.length = ' + tweets.length);
     return {
         tweets : tweets,
-
-        current : current,
 
         // Tweet[], The tweets currently on the map
         active : [],
 
         // Retrieves the tweets from midnight on a given day to the 
         // current timestamp of the slider
-        serveTweets : function() {
+        serveTweets : function(current, midnight_day_of) {
             // Serves the last tweet that was before or at a given timestamp.
             // Called on change of var current.
-            for (var i = this.tweets.length - 1; i >= 0; i--) {
-                if (midnight_day_of <= this.tweets[i].timestamp && this.tweets[i].timestamp <= this.current.date) {
-                    tweet = Tweet(this.tweets[i], current);
-                    this.active.push(tweet);
+            console.log(this.active);
+            active = this.active;
+            this.tweets.forEach(function(tweet) {
+                if (midnight_day_of <= tweet.timestamp && tweet.timestamp <= Date.parse(current.date)) {
+                    console.log(active);
+                    if (!checkForEntry(tweet, active)) {
+                        t = Tweet(tweet, current);
+                        this.active.push(t);
+                    }
                 }
-
-                // Stop searching once we are looking further than the current timestamp.
-                if (this.tweets[i].timestamp > this.current.date) {
-                    this.plotTweets();
-                    break;
-                }
-            }
+            });
         },
 
         // Plot all of the "active" tweets
