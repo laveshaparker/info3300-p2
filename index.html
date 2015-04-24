@@ -5,10 +5,11 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-		<script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
-		<script src="http://d3js.org/topojson.v1.min.js"></script>
-		<script src="slider_functions.js"></script>
-		<script src="trace_functions.js"></script>
+        <script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
+        <script src="http://d3js.org/topojson.v1.min.js"></script>
+        <script src="slider_functions.js"></script>
+        <script src="trace_functions.js"></script>
+        <script src="tweets.js"></script>
         <style>
             body {
                 font-family: sans-serif;
@@ -34,32 +35,32 @@
             .one-fourth {
                 width: 25%;
             }
-			.stroke {
-				fill: none;
-				stroke: #000;
-				stroke-width: 3px;
-			}
+            .stroke {
+                fill: none;
+                stroke: #000;
+                stroke-width: 3px;
+            }
 
-			.fill {
-				fill: #C6DEF6;
-			}
+            .fill {
+                fill: #C6DEF6;
+            }
 
-			.graticule {
-				fill: none;
-				stroke: #777;
-				stroke-width: .5px;
-				stroke-opacity: .5;
-			}
+            .graticule {
+                fill: none;
+                stroke: #777;
+                stroke-width: .5px;
+                stroke-opacity: .5;
+            }
 
-			.land {
-				fill: #222;
-			}
+            .land {
+                fill: #222;
+            }
 
-			.boundary {
-				fill: none;
-				stroke: #fff;
-				stroke-width: .5px;
-			}
+            .boundary {
+                fill: none;
+                stroke: #fff;
+                stroke-width: .5px;
+            }
         </style>
         <script>
             window.twttr = (function(d, s, id) {
@@ -88,7 +89,7 @@
             <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
             <a class="twitter-timeline" href="https://twitter.com/AstroSamantha" data-widget-id="588409020664406017">Tweets by @AstroSamantha</a>
             <blockquote class="twitter-tweet"><p>Questo weekend c&#39;è la finale italiana delle <a href="https://twitter.com/hashtag/OlimpiadiAstronomia?src=hash">#OlimpiadiAstronomia</a>: un grande in bocca al lupo dallo spazio! <a href="https://twitter.com/mediainaf">@mediainaf</a> <a href="http://t.co/SAKu1qGmxr">http://t.co/SAKu1qGmxr</a></p>&mdash; Sam Cristoforetti (@AstroSamantha) <a href="https://twitter.com/AstroSamantha/status/588978295955423233">April 17, 2015</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
             <script> 
                 // get the timeline for samantha
                 !function(d,s,id){
@@ -104,52 +105,48 @@
                 (document,"script","twitter-wjs");
             </script>
         </div>
-
-        <div>
-            <script>
-                var user_timeline_url = "https://api.twitter.com/1.1/statuses/user_timeline.json",
-                    samantha_name = "AstroSamantha";
-                $.ajax ({
-                    url: user_timeline_url,
-                    context: document.body,
-                    method: "GET",
-                    data: {
-                        screen_name: samantha_name,
-                        count: 1,
-                        exclude_replies: true,
-                        include_rts: false,
-                    },
-                    success: function(data) {
-                        console.log(data);
-                    }
-                })
-            </script>
-        </div>
-		<script>
-			var width = 1440,
-				height = 600;
-			var svg = d3.select("body").append("svg")
-				.attr("width", width)
-				.attr("height", height);
-		</script>
+        <script>
+        var width = 1440,
+            height = 600;
+        var svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+        </script>
         <div id="main" class="floated three-fourths">
-			<!-- Shows the selected day as a string -->
+            <!-- Shows the selected day as a string -->
             <p id="selectedDate"></p>
-			<!-- Slider to pick a day from the data -->
+            <!-- Slider to pick a day from the data -->
             <input type="range" id="days" class="range" min="0" value="0" oninput="setDate(this.value)"/><br />
-			<!-- Shows the selected time as a string -->
+            <!-- Shows the selected time as a string -->
             <p id="selectedTime"></p>
-			<!-- Slider to pick a time from the current day's data -->
+            <!-- Slider to pick a time from the current day's data -->
             <input type="range" id="times" class="range" min="0" value="0" oninput="setTime(this.value)"/><br />
-			<p>Set Play Speed</p>
-			<!-- Slider to control the speed of the play function -->
-			Slow&nbsp;<input type="range" id="speed" class="range" min="0" max="200" value="100"/>&nbsp;Fast<br />
-			<!-- Button to cause the sliders to automatically advance at the chosen speed -->
-			<button type="button" id="play" onclick="forward=setTimeout('moveForward()', speedScale($('#speed').val()));">Play</button>
-			<!-- Button to stop sliders automatically advancing, hidden by default -->
-			<button type="button" style="display: none" id="pause" onclick="pause(forward)">Pause</button>
-			<button type="button" id="showOrbits" onclick="showOrbit()" style="display:none">Show Only the Current Orbit</button>
-			<button type="button" id="showDay" onclick="showDay()" style="">Show All Orbits for the Selected Day</button>
+            <p>Set Play Speed</p>
+            <!-- Slider to control the speed of the play function -->
+            Slow&nbsp;<input type="range" id="speed" class="range" min="0" max="200" value="100"/>&nbsp;Fast<br />
+            <!-- Button to cause the sliders to automatically advance at the chosen speed -->
+            <button type="button" id="play" onclick="forward=setTimeout('moveForward()', speedScale($('#speed').val()));">Play</button>
+            <!-- Button to stop sliders automatically advancing, hidden by default -->
+            <button type="button" style="display: none" id="pause" onclick="pause(forward)">Pause</button>
+            <button type="button" id="showOrbits" onclick="showOrbit()" style="display:none">Show Only the Current Orbit</button>
+            <button type="button" id="showDay" onclick="showDay()" style="">Show All Orbits for the Selected Day</button>
+            <script> // Everything involving tweets
+            // Raw data from tweets_timestamps_html.json
+            var tweets;
+            // An object that manages displaying tweets
+            var tweetHandler = {};
+
+            $("#times").on("change", function() {
+                if (!tweetHandler.tweets) {
+                    // Can now initialize a TweetHandler, since current is definitely defined
+                    console.log(svg);
+                    tweetHandler = TweetHandler(tweets, current, 0);   
+                }
+                tweetHandler.serveTweets();
+                tweetHandler.plotTweets();
+            });
+            </script>
+
             <script>
             //current orbit
             var current;
@@ -159,27 +156,28 @@
             var orbits = {};
             //orbits in array form
             var orbitArr = [];
+
             d3.json("friends-in-space-data/fisOrbits.json", function (data) {
                 orbitData = data;
                 //organizes data by day.  starts by taking each element of the array in fisOrbits
                 orbitData.forEach(function(d){
-					//variable to allow the coordinates for each day to be matched to the correct timestamp
+                    //variable to allow the coordinates for each day to be matched to the correct timestamp
                     var i = 0;
-					//individually assesses and organizes each timestamp for the selected entry.  uses i to track corresponding coordinates
-					var orbitID = d.orbitId;
+                    //individually assesses and organizes each timestamp for the selected entry.  uses i to track corresponding coordinates
+                    var orbitID = d.orbitId;
                     d.orbit.timestamps.forEach(function(e){
                         var date = new Date(e);
-						//string to check for existing day entry
+                        //string to check for existing day entry
                         var dstring = date.getFullYear() + ', ' + date.getMonth() + ', ' + date.getDate();
-						//checks if entry exists for current data's timestamp
+                        //checks if entry exists for current data's timestamp
                         if(orbits[dstring]){
-							//pushes a new "orbit" to the current day
+                            //pushes a new "orbit" to the current day
                             orbits[dstring].push({'date':date, 'coords':d.orbit.coordinates[i], 'id':orbitID});
                         }
                         else{
-							//creates an entry for the current day
+                            //creates an entry for the current day
                             orbits[dstring] = [];
-							//pushes a new "orbit" to the current day
+                            //pushes a new "orbit" to the current day
                             orbits[dstring].push({'date':date, 'coords':d.orbit.coordinates[i], 'id':orbitID});
                         }
                         i++;
@@ -189,71 +187,78 @@
                 $.each(orbits, function(d, e){
                         orbitArr.push(e);
                 });
-				//initialization call
+                //initialization call
                 setDefault();
+
+                // Read tweet data
+                d3.json("tweets_timestamps_html.json", function (ts) {tweets = ts});
+
+                
+
             });
             //initialize interface
             function setDefault(){
-				//Max value of days initialized to number of days in the data -1
+                //Max value of days initialized to number of days in the data -1
                 $("#days").attr("max", orbitArr.length - 1);
-				//Max value of times initialized to number of times in first day -1
+                //Max value of times initialized to number of times in first day -1
                 $("#times").attr("max", orbitArr[0].length - 1);
-				//Sets text to first day and time respectively
+                //Sets text to first day and time respectively
                 $("#selectedDate").text(orbitArr[$('#days').val()][$('#times').val()].date.toDateString());
                 $("#selectedTime").text(orbitArr[$('#days').val()][$('#times').val()].date.toTimeString());
-				//initializes current
+                //initializes current
                 current = orbitArr[$('#days').val()][$('#times').val()];
-				if(show1Orbit){
-					plotCurOrbit();
-				}
-				else{
-					plotDayTrace();
-				}
+                current.onchange = function() {console.log("Current changed.1")};
+                if(show1Orbit){
+                    plotCurOrbit();
+                }
+                else{
+                    plotDayTrace();
+                }
             }
             </script>
-			<script>
-			//currently using kavrayskiy projection for 2D
-			var projection = d3.geo.kavrayskiy7()
-				.scale(170)
-				.translate([width / 2, height / 2])
-				.precision(.1);
+            <script>
+            //currently using kavrayskiy projection for 2D
+            var projection = d3.geo.kavrayskiy7()
+                .scale(170)
+                .translate([width / 2, height / 2])
+                .precision(.1);
 
-			var path = d3.geo.path()
-				.projection(projection);
+            var path = d3.geo.path()
+                .projection(projection);
 
-			var graticule = d3.geo.graticule();
+            var graticule = d3.geo.graticule();
 
-			svg.append("defs").append("path")
-				.datum({type: "Sphere"})
-				.attr("id", "sphere")
-				.attr("d", path);
+            svg.append("defs").append("path")
+                .datum({type: "Sphere"})
+                .attr("id", "sphere")
+                .attr("d", path);
 
-			svg.append("use")
-				.attr("class", "stroke")
-				.attr("xlink:href", "#sphere");
+            svg.append("use")
+                .attr("class", "stroke")
+                .attr("xlink:href", "#sphere");
 
-			svg.append("use")
-				.attr("class", "fill")
-				.attr("xlink:href", "#sphere");
+            svg.append("use")
+                .attr("class", "fill")
+                .attr("xlink:href", "#sphere");
 
-			svg.append("path")
-				.datum(graticule)
-				.attr("class", "graticule")
-				.attr("d", path);
-			d3.json("world-50m.json", function(error, world) {
-			  svg.insert("path", ".graticule")
-				  .datum(topojson.feature(world, world.objects.land))
-				  .attr("class", "land")
-				  .attr("d", path);
+            svg.append("path")
+                .datum(graticule)
+                .attr("class", "graticule")
+                .attr("d", path);
+            d3.json("world-50m.json", function(error, world) {
+              svg.insert("path", ".graticule")
+                  .datum(topojson.feature(world, world.objects.land))
+                  .attr("class", "land")
+                  .attr("d", path);
 
-			  svg.insert("path", ".graticule")
-				  .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
-				  .attr("class", "boundary")
-				  .attr("d", path);
-			});
+              svg.insert("path", ".graticule")
+                  .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+                  .attr("class", "boundary")
+                  .attr("d", path);
+            });
 
-			d3.select(self.frameElement).style("height", height + "px");
-			</script>
+            d3.select(self.frameElement).style("height", height + "px");
+            </script>
         </div>
     </body>
 </html>
