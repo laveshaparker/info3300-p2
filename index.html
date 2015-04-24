@@ -26,7 +26,7 @@
                 font-weight: 100;
             }
 			#displayTweet {
-				width: 500px;
+				width: 425px;
 				margin-right: auto;
 				margin-left: auto;
 			}
@@ -253,10 +253,10 @@
 			
 			function removeMiddle() {
 				var win = $(window).width() - 20;
-				var tweetWidth = 500;
+				var tweetWidth = 425;
 				var mainWidth = 1000;
 				var extraWidth = win - tweetWidth - mainWidth;
-				if(win > 1500){
+				if(win > 1425){
 					$('#tweetContainer').width(tweetWidth + Math.floor(extraWidth / 2));
 					$('#main').width(mainWidth + Math.floor(extraWidth / 2));
 				}
