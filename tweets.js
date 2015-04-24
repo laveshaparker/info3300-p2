@@ -57,15 +57,15 @@ function Tweet(tweet, map) {
         coordinates : current.coords,
         plotTweet   : function(map) {
             console.log('here2');
+            _this = this;
             map.append("svg:circle") //test circle for selecting point
                .attr("cx", projection(current.coords)[0]) //x-longitude
                .attr("cy", projection(current.coords)[1]) //y-latitude
                .attr("r", 4) 
                .attr("class", "tweetCircle")
                .attr("id", this.id)
-               .attr("style", "stroke: #4099FF; stroke-width: 8; fill: #4099FF");
-            console.log($("#" + this.id));
-            $("#" + this.id).on("click", function() {console.log("THIS tweet was clicked"); this.showTweet()});
+               .attr("style", "stroke: #4099FF; stroke-width: 8; fill: #4099FF")
+               .on("click", function() {_this.showTweet()});
         },
 
         showTweet : function() {

@@ -32,15 +32,7 @@
             .range {
                 width: 500px;
             }
-            .floated {
-                float: left;
-            }
-            .three-fourths {
-                width: 75%;
-            }
-            .one-fourth {
-                width: 25%;
-            }
+
             .stroke {
                 fill: none;
                 stroke: #000;
@@ -99,7 +91,7 @@
             .attr("width", width)
             .attr("height", height);
         </script>
-        <div id="main" class="floated three-fourths">
+        <div id="main">
             <!-- Shows the selected day as a string -->
             <p id="selectedDate"></p>
             <!-- Slider to pick a day from the data -->
@@ -128,7 +120,7 @@
 
             $("#times").on("input change", function() {
                 tweetHandler.tweets[5].plotTweet(svg);
-                tweetHandler.tweets[5].showTweet(svg);
+                // tweetHandler.tweets[5].showTweet(svg);
                 // // console.log('serving');
                 // tweetHandler.serveTweets(current);
                 // // console.log('plotting');
