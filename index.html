@@ -15,6 +15,7 @@
             body {
                 font-family: sans-serif;
                 font-weight: 100;
+				width: 100%;
             }
 			svg {   
 					margin-left:auto; 
@@ -24,10 +25,24 @@
             h1, h2, h3, h4, h5, h6 {
                 font-weight: 100;
             }
+			#displayTweet {
+				width: 500px;
+				margin-right: auto;
+				margin-left: auto;
+			}
+			#tweetContainer {
+				display: inline-block;
+				text-align: center;
+				min-height: 300px;
+				width: 500px;
+				float: left;
+			}
             #main {
+				float: right;
                 margin-right: auto;
                 margin-left: auto;
                 text-align: center;
+				line-height: .8em;
             }
             .range {
                 width: 500px;
@@ -81,15 +96,17 @@
         </script>
     </head>
     <body>
+		<div id="tweetContainer">
         <div id="displayTweet"></div>
-        <script>
-        var width = 1440,
-            height = 600;
-        var svg = d3.select("body").append("svg")
-            .attr("width", width)
-            .attr("height", height);
-        </script>
+		</div>
         <div id="main">
+			<script>
+			var width = 1000,
+				height = 550;
+			var svg = d3.select("#main").append("svg")
+				.attr("width", width)
+				.attr("height", height);
+			</script>
             <!-- Shows the selected day as a string -->
             <p id="selectedDate"></p>
             <!-- Slider to pick a day from the data -->
@@ -233,6 +250,22 @@
             });
 
             d3.select(self.frameElement).style("height", height + "px");
+			
+			function removeMiddle() {
+				var win = $(window).width() - 20;
+				var tweetWidth = 500;
+				var mainWidth = 1000;
+				var extraWidth = win - tweetWidth - mainWidth;
+				$('#tweetContainer').width(tweetWidth + Math.floor(extraWidth / 2));
+				$('#main').width(mainWidth + Math.floor(extraWidth / 2));
+			}
+			window.onload = function(){
+				removeMiddle();
+			}
+			$(window).resize(function(){
+				removeMiddle();
+			});
+			
             </script>
         </div>
     </body>
