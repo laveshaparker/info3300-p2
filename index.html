@@ -9,6 +9,7 @@
         <script src="http://d3js.org/topojson.v1.min.js"></script>
         <script src="slider_functions.js"></script>
         <script src="trace_functions.js"></script>
+        <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
         <script src="tweets.js"></script>
         <style>
             body {
@@ -88,27 +89,8 @@
         </script>
     </head>
     <body>
-        <div class="floated one-fourth">
-            <h2>Check out some of Samantha's most recent tweets!</h2>
-            <blockquote class="twitter-tweet" lang="en"><p>Hello <a href="https://twitter.com/hashtag/India?src=hash">#India</a>! In the Tamil Nadu state, 3 temples from the Chola Empire (11th &amp; 12th century) are <a href="https://twitter.com/hashtag/WorldHeritage?src=hash">#WorldHeritage</a> site. <a href="http://t.co/kWRob1xxQK">pic.twitter.com/kWRob1xxQK</a></p>&mdash; Sam Cristoforetti (@AstroSamantha) <a href="https://twitter.com/AstroSamantha/status/588316473849946113">April 15, 2015</a></blockquote>
-            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-            <a class="twitter-timeline" href="https://twitter.com/AstroSamantha" data-widget-id="588409020664406017">Tweets by @AstroSamantha</a>
-            <blockquote class="twitter-tweet"><p>Questo weekend c&#39;è la finale italiana delle <a href="https://twitter.com/hashtag/OlimpiadiAstronomia?src=hash">#OlimpiadiAstronomia</a>: un grande in bocca al lupo dallo spazio! <a href="https://twitter.com/mediainaf">@mediainaf</a> <a href="http://t.co/SAKu1qGmxr">http://t.co/SAKu1qGmxr</a></p>&mdash; Sam Cristoforetti (@AstroSamantha) <a href="https://twitter.com/AstroSamantha/status/588978295955423233">April 17, 2015</a></blockquote>
-            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-            <script> 
-                // get the timeline for samantha
-                !function(d,s,id){
-                    var js,fjs=d.getElementsByTagName(s)[0],
-                        p=/^http:/.test(d.location)?'http':'https';
-                    if(!d.getElementById(id)){
-                        js=d.createElement(s);
-                        js.id=id;
-                        js.src=p+"://platform.twitter.com/widgets.js";
-                        fjs.parentNode.insertBefore(js,fjs);
-                    }
-                }
-                (document,"script","twitter-wjs");
-            </script>
+        <div id="displayTweet">
+
         </div>
         <script>
         var width = 1440,
@@ -141,11 +123,16 @@
             // An object that manages displaying tweets
             var tweetHandler;
 
+            // $("svg").on("click", function() {console.log("clicked svg");});
+            $(".tweetCircle").on("mouseover", function() {console.log("A tweet was clicked.")});
+
             $("#times").on("input change", function() {
-                console.log('serving');
-                tweetHandler.serveTweets(current, 0);
-                console.log('plotting');
-                tweetHandler.plotTweets();
+                tweetHandler.tweets[5].plotTweet(svg);
+                tweetHandler.tweets[5].showTweet(svg);
+                // // console.log('serving');
+                // tweetHandler.serveTweets(current);
+                // // console.log('plotting');
+                // tweetHandler.plotTweets();
             });
             </script>
 
@@ -167,20 +154,21 @@
                     var i = 0;
                     //individually assesses and organizes each timestamp for the selected entry.  uses i to track corresponding coordinates
                     var orbitID = d.orbitId;
+                    var orbitStart = d.start;
                     d.orbit.timestamps.forEach(function(e){
                         var date = new Date(e);
                         //string to check for existing day entry
-                        var dstring = date.getFullYear() + ', ' + date.getMonth() + ', ' + date.getDate();
+                        var dstring = date.getUTCFullYear() + ', ' + date.getUTCMonth() + ', ' + date.getUTCDate();
                         //checks if entry exists for current data's timestamp
                         if(orbits[dstring]){
                             //pushes a new "orbit" to the current day
-                            orbits[dstring].push({'date':date, 'coords':d.orbit.coordinates[i], 'id':orbitID});
+                            orbits[dstring].push({'date':date, 'coords':d.orbit.coordinates[i], 'id':orbitID, 'start':orbitStart});
                         }
                         else{
                             //creates an entry for the current day
                             orbits[dstring] = [];
                             //pushes a new "orbit" to the current day
-                            orbits[dstring].push({'date':date, 'coords':d.orbit.coordinates[i], 'id':orbitID});
+                            orbits[dstring].push({'date':date, 'coords':d.orbit.coordinates[i], 'id':orbitID, 'start':orbitStart});
                         }
                         i++;
                     });
@@ -196,9 +184,6 @@
                 d3.json("relevant_tweets.json", function (ts) {
                     tweetHandler = TweetHandler(ts);
                 });
-
-                
-
             });
             //initialize interface
             function setDefault(){
