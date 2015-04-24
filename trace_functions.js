@@ -19,6 +19,7 @@
             $("#iss").on("click", function() {console.log("A tweet was clicked.")});
             
             };
+		//moves the circle and image representing the current position of the iss
         function moveCircle() {
             svg.select('.curCircle')
                 .attr("cx", projection(current.coords)[0])
@@ -31,7 +32,7 @@
         //plot current ISS orbit trace for current day
         var plotDayTrace = function(){
             $(".dayCircle").remove();
-            svg.selectAll('circle')
+            svg.selectAll('.dayCircle')
                 .data(orbitArr[$('#days').val()])
                 .enter()
                 .append("circle")
@@ -49,7 +50,7 @@
         //plot current ISS orbit trace for current orbit
         var plotCurOrbit = function(){
             $(".curOrbitCircle").remove();
-            svg.selectAll('circle')
+            svg.selectAll('.curOrbitCircle')
                 .data(orbitData[current.id].orbit.coordinates)
                 .enter()
                 .append("circle")
@@ -64,6 +65,7 @@
                 .style("fill", 'red');
             plotCircle();
         };
+		//Shows all orbits for the day
         function showDay() {
             show1Orbit = false;
             $('#showDay').hide();
@@ -71,6 +73,7 @@
             $(".curOrbitCircle").remove();
             plotDayTrace();
         }
+		//Shows only the current orbit
         function showOrbit() {
             show1Orbit = true;
             $('#showOrbits').hide();
