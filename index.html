@@ -136,7 +136,7 @@
             // An object that manages displaying tweets
             var tweetHandler;
 
-            $("#times").on("change", function() {
+            $("#times").on("input change", function() {
                 console.log('serving');
                 tweetHandler.serveTweets(current, 0);
                 console.log('plotting');
@@ -206,7 +206,6 @@
                 $("#selectedTime").text(orbitArr[$('#days').val()][$('#times').val()].date.toTimeString());
                 //initializes current
                 current = orbitArr[$('#days').val()][$('#times').val()];
-                current.onchange = function() {console.log("Current changed.1")};
                 if(show1Orbit){
                     plotCurOrbit();
                 }

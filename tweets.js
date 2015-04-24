@@ -8,7 +8,6 @@ function checkForEntry(tweet, active) {
 }
 
 function TweetHandler(tweets) {
-    console.log('tweets.length = ' + tweets.length);
     return {
         tweets : tweets,
 
@@ -20,13 +19,11 @@ function TweetHandler(tweets) {
         serveTweets : function(current, midnight_day_of) {
             // Serves the last tweet that was before or at a given timestamp.
             // Called on change of var current.
-            console.log(this.active);
             active = this.active;
             this.tweets.forEach(function(tweet) {
                 if (midnight_day_of <= tweet.timestamp && tweet.timestamp <= Date.parse(current.date)) {
-                    console.log(active);
                     if (!checkForEntry(tweet, active)) {
-                        t = Tweet(tweet, current);
+                        t = Tweet(tweet);
                         this.active.push(t);
                     }
                 }
@@ -42,7 +39,7 @@ function TweetHandler(tweets) {
     }
 }
 
-function Tweet(tweet, current, map) {
+function Tweet(tweet, map) {
     return {
         id          : tweet.id,
         timestamp   : tweet.timestamp,
@@ -55,7 +52,7 @@ function Tweet(tweet, current, map) {
                    .attr("cy", projection(this.coordinates)[1]) //y-latitude
                    .attr("r", 4)
                    .attr("class", "curCircle")
-                   .attr("style", "stroke: pink; stroke-width: 8; fill: #000000");
+                   .attr("style", "stroke: red; stroke-width: 8; fill: #000000");
         },
     }
 }
