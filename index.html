@@ -256,8 +256,14 @@
 				var tweetWidth = 500;
 				var mainWidth = 1000;
 				var extraWidth = win - tweetWidth - mainWidth;
-				$('#tweetContainer').width(tweetWidth + Math.floor(extraWidth / 2));
-				$('#main').width(mainWidth + Math.floor(extraWidth / 2));
+				if(win > 1500){
+					$('#tweetContainer').width(tweetWidth + Math.floor(extraWidth / 2));
+					$('#main').width(mainWidth + Math.floor(extraWidth / 2));
+				}
+				else {
+					$('#tweetContainer').width(tweetWidth);
+					$('#main').width(mainWidth);
+				}
 			}
 			window.onload = function(){
 				removeMiddle();

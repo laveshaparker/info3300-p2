@@ -1,19 +1,12 @@
         var show1Orbit = true;
         //plot current ISS position
         var plotCircle = function(){
-            $(".curCircle").remove();
             $("#iss").remove();
-            svg.append("circle") //test circle for selecting point
-               .attr("cx", projection(current.coords)[0]) //x-longitude
-               .attr("cy", projection(current.coords)[1]) //y-latitude
-               .attr("r", 2) 
-               .attr("class", "curCircle")
-               .attr("style", "stroke: blue; stroke-width: 8; fill: #000000");
             svg.append("svg:image")
-                .attr("x", projection(current.coords)[0])
-                .attr("y", projection(current.coords)[1])
-                .attr('width', 65)
-                .attr('height', 35)
+                .attr("x", projection(current.coords)[0] -33)
+                .attr("y", projection(current.coords)[1] -18)
+                .attr('width', 66)
+                .attr('height', 36)
                 .attr("id", "iss")
                 .attr('xlink:href', "images/iss.gif");
             $("#iss").on("click", function() {console.log("A tweet was clicked.")});
@@ -21,12 +14,9 @@
             };
 		//moves the circle and image representing the current position of the iss
         function moveCircle() {
-            svg.select('.curCircle')
-                .attr("cx", projection(current.coords)[0])
-                .attr("cy", projection(current.coords)[1]);
             svg.select('#iss')
-                .attr("x", projection(current.coords)[0])
-                .attr("y", projection(current.coords)[1]);
+                .attr("x", projection(current.coords)[0] -33)
+                .attr("y", projection(current.coords)[1] -18);
 
         }
         //plot current ISS orbit trace for current day
