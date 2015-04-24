@@ -54,16 +54,15 @@ function Tweet(tweet, map) {
         id          : tweet.id,
         timestamp   : tweet.timestamp,
         html        : tweet.html,
-        coordinates : current.coords,
+        coordinates : tweet.coordinates,
         plotTweet   : function(map) {
-            console.log('here2');
             _this = this;
             map.append("svg:circle") //test circle for selecting point
-               .attr("cx", projection(current.coords)[0]) //x-longitude
-               .attr("cy", projection(current.coords)[1]) //y-latitude
+               .attr("cx", projection(_this.coordinates)[0]) //x-longitude
+               .attr("cy", projection(_this.coordinates)[1]) //y-latitude
                .attr("r", 4) 
                .attr("class", "tweetCircle")
-               .attr("id", this.id)
+               .attr("id", _this.id)
                .attr("style", "stroke: #4099FF; stroke-width: 8; fill: #4099FF")
                .on("click", function() {_this.showTweet()});
         },

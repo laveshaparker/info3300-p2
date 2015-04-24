@@ -81,9 +81,7 @@
         </script>
     </head>
     <body>
-        <div id="displayTweet">
-
-        </div>
+        <div id="displayTweet"></div>
         <script>
         var width = 1440,
             height = 600;
@@ -115,12 +113,8 @@
             // An object that manages displaying tweets
             var tweetHandler;
 
-            // $("svg").on("click", function() {console.log("clicked svg");});
-            $(".tweetCircle").on("mouseover", function() {console.log("A tweet was clicked.")});
-
             $("#times").on("input change", function() {
                 tweetHandler.tweets[5].plotTweet(svg);
-                // tweetHandler.tweets[5].showTweet(svg);
                 // // console.log('serving');
                 // tweetHandler.serveTweets(current);
                 // // console.log('plotting');
@@ -164,6 +158,7 @@
                         }
                         i++;
                     });
+        
                 });
                 //outputs orbits as orbitArr
                 $.each(orbits, function(d, e){
@@ -173,7 +168,7 @@
                 setDefault();
 
                 // Read tweet data
-                d3.json("relevant_tweets.json", function (ts) {
+                d3.json("relevant_tweets_coords.json", function (ts) {
                     tweetHandler = TweetHandler(ts);
                 });
             });
