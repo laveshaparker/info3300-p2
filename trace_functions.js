@@ -9,8 +9,6 @@
                 .attr('height', 36)
                 .attr("id", "iss")
                 .attr('xlink:href', "images/iss.gif");
-            $("#iss").on("click", function() {console.log("A tweet was clicked.")});
-            
             };
 		//moves the circle and image representing the current position of the iss
         function moveCircle() {

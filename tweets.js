@@ -1,7 +1,6 @@
 function checkForEntry(tweet, active) {
     active.forEach(function(active_tweet) {
         if (active_tweet.id === tweet.id) {
-            console.log("duplicate");
             return true;
         }
     });
@@ -50,7 +49,6 @@ function TweetHandler(tweets) {
         removeTweets : function() {
             this.active.forEach(function(tweet) {
                 tweet.hideTweet();
-                tweet.hideTweetCircle();
             });
             this.active = [];
         },
@@ -63,6 +61,7 @@ function Tweet(tweet, map) {
         timestamp   : tweet.timestamp,
         html        : tweet.html,
         coordinates : tweet.coordinates,
+        showing     : false,
         plotTweet   : function(map) {
             this.hideTweet();
             document.getElementById("displayTweet").innerHTML = this.html;
@@ -70,18 +69,18 @@ function Tweet(tweet, map) {
         },
 
         showTweet : function() {
-            // Need to add a preloader icon
-            this.hideTweet();
-            document.getElementById("displayTweet").innerHTML = this.html;
-            twttr.widgets.load();
+            if (!this.showing) {
+                this.showing = true;
+                document.getElementById("sam_explained").style.display = 'none';
+                document.getElementById("displayTweet").innerHTML = this.html;
+                twttr.widgets.load();
+            }
         },
 
         hideTweet : function() {
+            document.getElementById("sam_explained").style.display = 'block';
             document.getElementById("displayTweet").innerHTML = "";
-        },
-
-        hideTweetCircle : function() {
-            document.getElementById(this.id).remove();
+            this.showing = false;
         },
     }
 }
