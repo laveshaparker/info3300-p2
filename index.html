@@ -363,13 +363,13 @@
     				var mainWidth = 1000;
     				var extraWidth = win - tweetWidth - mainWidth;
     				if(win > 1500){
-    					$('#tweetContainer').width(tweetWidth + Math.floor(extraWidth / 2));
+    					$('#tweetContainer').width(tweetWidth + Math.floor(extraWidth / 2) -40);
     					$('#displayTweet').width(500);
     					$('#main').width(mainWidth + Math.floor(extraWidth / 2));
     				}
     				else {
-    					$('#tweetContainer').width(win - mainWidth);
-    					$('#displayTweet').width(win - mainWidth);
+    					$('#tweetContainer').width(win - mainWidth - 40);
+    					$('#displayTweet').width(win - mainWidth -40);
     					$('#main').width(mainWidth);
     				}
     			}
