@@ -9,7 +9,7 @@ function findClosestCoordinates(tweet) {
     // console.log("last day first time: " + orbits[orbits.length - 1].orbit.timestamps[0]);
     // console.log("last day last time: " + orbits[orbits.length - 1].orbit.timestamps[orbits[orbits.length - 1].orbit.timestamps.length - 1]);
     var v;
-    for (var i = orbits.length - 1; i >= 0; i--) {
+    for (var i = 0; i <= orbits.length - 1; i++) {
         day = orbits[i].orbit;
         // for (var j = day.timestamps.length - 1; j >= 0; j--) {
             

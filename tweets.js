@@ -29,11 +29,8 @@ function TweetHandler(tweets) {
             // Called on change of var current.
             active = this.active;
             this.tweets.forEach(function(tweet) {
-                // console.log("Date.parse(current.date): " + Date.parse(current.date) + " tweet.timestamp " + tweet.timestamp);
-                // console.log("Date.parse(day.date)    : " + Date.parse(day.date) + " tweet.timestamp " + tweet.timestamp);
-
-                if (Date.parse(day.date) <= tweet.timestamp && tweet.timestamp <= Date.parse(current.date)) {
-                    // console.log(true);
+                ts = tweet.timestamp + (5 * 60 * 60 * 1000); // -5hr for EST
+                if (Date.parse(day.date) <= ts && ts <= Date.parse(current.date)) {
                     if (!checkForEntry(tweet, active)) {
                         t = Tweet(tweet);
                         this.active.push(t);
@@ -44,9 +41,9 @@ function TweetHandler(tweets) {
  
         // Plot all of the "active" tweets
         plotTweets : function() {
-            this.active.forEach(function(tweet) {
-                tweet.plotTweet(svg);
-            });
+            if (this.active && this.active.length > 0) {
+                this.active[this.active.length - 1].plotTweet(svg);
+            }
         },
 
         // Remove all active tweets from view
@@ -68,20 +65,8 @@ function Tweet(tweet, map) {
         coordinates : tweet.coordinates,
         plotTweet   : function(map) {
             this.hideTweet();
-
             document.getElementById("displayTweet").innerHTML = this.html;
-
             twttr.widgets.load();
-            
-            // _this = this;
-            // map.append("svg:circle")
-            //    .attr("cx", projection(_this.coordinates)[0]) //x-longitude
-            //    .attr("cy", projection(_this.coordinates)[1]) //y-latitude
-            //    .attr("r", 4) 
-            //    .attr("class", "tweetCircle")
-            //    .attr("id", _this.id)
-            //    .attr("style", "stroke: #4099FF; stroke-width: 8; fill: #4099FF")
-            //    .on("click", function() {_this.showTweet()});
         },
 
         showTweet : function() {
