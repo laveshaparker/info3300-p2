@@ -58,6 +58,9 @@
 				else{
 					moveCircle();
 				}
+				tweetHandler.serveTweets(current);
+                // // console.log('plotting');
+                tweetHandler.plotTweets();
 				//sets next instance of moveForward to happen after the time indicated by the speed slider
 				forward=setTimeout('moveForward()', speedScale($('#speed').val()));
 			}
@@ -77,6 +80,9 @@
 				else{
 					plotDayTrace();
 				}
+				tweetHandler.serveTweets(current);
+                // // console.log('plotting');
+                tweetHandler.plotTweets();
 				//sets next instance of moveForward to happen after the time indicated by the speed slider
 				forward=setTimeout('moveForward()', speedScale($('#speed').val()));
 			}
