@@ -37,6 +37,9 @@
 				width: 500px;
 				float: left;
 			}
+                #tweetContainer #sam_explained {
+                    text-align: justify;
+                }
             #main {
 				float: right;
                 margin-right: auto;
@@ -74,6 +77,18 @@
                 stroke: #999;
                 stroke-width: .5px;
             }
+            .image {
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                height: 200;
+                width: 200;
+            }
+            #samantha_profile_pic {
+                height: 200;
+                width: 200;
+                /*background-image: "images/sam_profie_pic.jpeg";*/
+            }
         </style>
         <script>
             window.twttr = (function(d, s, id) {
@@ -97,7 +112,17 @@
     </head>
     <body>
 		<div id="tweetContainer">
-        <div id="displayTweet"></div>
+            <h2>Meet Samantha Cristoforetti, an astronaut who has spent more than 5 months on the International Space Station!</h2>
+            <div class="image" id="samantha_profile_pic"></div>
+            <h3 id="sam_explained">
+                Samantha is a European Space Agency (ESA) astronaut who works as a Flight Engineer for Expeditions 42 and 43 of the International Space Station.
+                In between her shifts on the ISS, Samantha is extremely active on social media sites, especially <a target="_blank" href="https://twitter.com/AstroSamantha">Twitter</a>! 
+
+                <br><br>To learn more about Samantha's work, experiences, and much more, you can visit her <a target="_blank" href="http://samanthacristoforetti.esa.int/">ESA website</a>.
+
+                <br><br>In the meantime, feel free to orbit around the earth with her, and see what she tweets along the way!
+            </h3>
+            <div id="displayTweet"></div>
 		</div>
         <div id="main">
 			<script>
