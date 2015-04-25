@@ -41,6 +41,8 @@
         }
 		//implementation of play feature
 		function moveForward(){
+            document.getElementById("about").style.display = 'none';
+			
 			var temp = current;
 			//toggles buttons
 			$('#play').hide();
