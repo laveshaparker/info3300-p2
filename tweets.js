@@ -71,14 +71,14 @@ function Tweet(tweet, map) {
         showTweet : function() {
             if (!this.showing) {
                 this.showing = true;
-                document.getElementById("sam_explained").style.display = 'none';
+                // document.getElementById("about").style.display = 'none';
                 document.getElementById("displayTweet").innerHTML = this.html;
                 twttr.widgets.load();
             }
         },
 
         hideTweet : function() {
-            document.getElementById("sam_explained").style.display = 'block';
+            // document.getElementById("about").style.display = 'block';
             document.getElementById("displayTweet").innerHTML = "";
             this.showing = false;
         },
