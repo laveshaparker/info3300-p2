@@ -4,22 +4,12 @@ var orbits = JSON.parse(fs.readFileSync('friends-in-space-data/fisOrbits.json', 
 // console.log(tweets.length);
 
 function findClosestCoordinates(tweet) {
-    // console.log("first day first time: " + orbits[0].orbit.timestamps[0]);
-    // console.log("first day last time: " + orbits[0].orbit.timestamps[orbits[0].orbit.timestamps.length - 1]);
-    // console.log("last day first time: " + orbits[orbits.length - 1].orbit.timestamps[0]);
-    // console.log("last day last time: " + orbits[orbits.length - 1].orbit.timestamps[orbits[orbits.length - 1].orbit.timestamps.length - 1]);
     var v;
-    for (var i = orbits.length - 1; i >= 0; i--) {
+    for (var i = 0; i <= orbits.length - 1; i++) {
         day = orbits[i].orbit;
-        // for (var j = day.timestamps.length - 1; j >= 0; j--) {
-            
         for (var j = 0; j < day.timestamps.length; j++) {
-            // console.log(j);
-            // console.log(day.timestamps[j]);
             timestamp = day.timestamps[j]; // cast to miliseconds
-            // console.log("tweet: " + tweet.timestamp + " timestamp: " + timestamp);
             if (!v && tweet.timestamp >= timestamp) {
-                // console.log(day.coordinates[j - 1]);
                 v = day.coordinates[j - 1];
             }
         }

@@ -12,8 +12,6 @@ var success = function (data) {
     tweet = data ? JSON.parse(data) : [];
     return_arr = [];
 
-    console.log("there are " + tweet.length + " tweets.");
-
     for (var i = tweet.length - 1; i >= 0; i--) {
         return_arr = return_arr.concat({
             tweet_id  : tweet[i].id_str,
